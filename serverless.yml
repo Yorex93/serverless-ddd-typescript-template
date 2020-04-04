@@ -1,0 +1,40 @@
+service:
+  name: serverless
+# app and org for use with dashboard.serverless.com
+#app: your-app-name
+#org: your-org-name
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+  serverless-offline:
+    httpPort: 4000
+
+# Add the serverless-webpack plugin
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+  - serverless-webpack
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  apiGateway:
+    minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+
+functions:
+  get:
+    handler: handler.get
+    events:
+      - http:
+          method: get
+          path: /
+  post:
+    handler: handler.post
+    events:
+      - http:
+          method: post
+          path: /post       
