@@ -1,8 +1,8 @@
 service:
-  name: serverless
+  name: serverless-ddd-typescript
 # app and org for use with dashboard.serverless.com
-#app: your-app-name
-#org: your-org-name
+app: ddd-typescript
+org: yorex93
 
 custom:
   webpack:
@@ -10,9 +10,17 @@ custom:
     includeModules: true
   serverless-offline:
     httpPort: 4000
+  customDomain:
+    domainName: ${env:DOMAIN_NAME}
+    basePath: ''
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+    certificateArn: ${env:CERT_ARN}
+
 
 # Add the serverless-webpack plugin
 plugins:
+  - serverless-domain-manager
   - serverless-offline
   - serverless-dotenv-plugin
   - serverless-webpack
@@ -20,6 +28,7 @@ plugins:
 provider:
   name: aws
   runtime: nodejs12.x
+  stage: ${opt:stage, 'dev'}
   apiGateway:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
   environment:
