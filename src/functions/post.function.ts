@@ -6,7 +6,8 @@ export const postFunction: APIGatewayProxyHandler = async (event, _context) => {
         statusCode: 200,
         body: JSON.stringify({
             result: getName(),
-            method: "POST"
+            method: "POST",
+            event,
         }, null, 2),
     };
 }
